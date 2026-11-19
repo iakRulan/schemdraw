@@ -1,0 +1,7 @@
+{
+  "case_id": "example-schem",
+  "materials": ["material.txt"],
+  "export": {"width_px": 800, "height_px": 420, "dpi": 200, "font": "Helvetica, Arial, sans-serif"},
+  "chart": {"title": "Expression", "labels": ["A", "B", "C"], "values": [10, 20, 15]},
+  "notes": "示例输入：material.txt 与 case.json 同目录；正式环境由平台提供。"
+}
