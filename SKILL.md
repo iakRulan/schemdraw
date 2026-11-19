@@ -5,6 +5,8 @@ description: "Generate editable, source-traceable scientific schematics and char
 
 # schemdraw — Editable Scientific Schematics with Source Traceability
 
+> **脚本路径**：本技能安装于 `/skills/weekly-skill/`，脚本绝对路径为 `/skills/weekly-skill/scripts/`（工作目录是 `/app/work`，不要用相对路径）。
+
 Produce a figure that is **correct, editable and export-compliant**: every entity/relation traces to the material, the legend matches the data, the text stays selectable, and the exports meet the target resolution. The failure mode this skill exists to prevent: a pretty picture with wrong entity relations, invented gene names or concentrations, a legend that disagrees with the data, and a bitmap-only output that cannot be edited.
 
 **Method in one line:** extract entities/relations from the material → lay them out as a layered SVG (grouped, selectable text, arrow direction by relation type) → build the chart from the same source data with an explicit legend/colour map → export PDF+PNG → validate traceability and export contract.
@@ -20,7 +22,7 @@ Produce a figure that is **correct, editable and export-compliant**: every entit
 ### Phase 1 — Extract and draw
 
 ```bash
-python3 scripts/schem.py --case /input/case.json --work /app/work
+python3 /skills/weekly-skill/scripts/schem.py --case /input/case.json --work /app/work
 ```
 
 - Reads each material (text/Markdown), merges provided `entities`/`relations` with relations extracted from patterns: `X activates|promotes|enhances Y`, `X inhibits|suppresses|blocks Y`, `X -> Y`, `X --| Y`, `X binds|interacts with Y`, `X contains|includes Y`.
@@ -31,7 +33,7 @@ python3 scripts/schem.py --case /input/case.json --work /app/work
 ### Phase 2 — Export
 
 ```bash
-python3 scripts/export.py --work /app/work --dpi 300
+python3 /skills/weekly-skill/scripts/export.py --work /app/work --dpi 300
 ```
 
 LibreOffice headless converts SVG → PDF (vector, selectable text); PyMuPDF rasterizes PDF → PNG at the requested DPI. Writes `export_report.json`. If LibreOffice is missing, the report says so and the status becomes `partial` — never a silent failure.
@@ -39,7 +41,7 @@ LibreOffice headless converts SVG → PDF (vector, selectable text); PyMuPDF ras
 ### Phase 3 — Validate
 
 ```bash
-python3 scripts/validate.py --case /input/case.json --work /app/work
+python3 /skills/weekly-skill/scripts/validate.py --case /input/case.json --work /app/work
 ```
 
 Checks:
@@ -79,7 +81,7 @@ cp /app/work/figure.svg /app/work/chart.svg /app/work/figure.pdf /app/work/figur
 ## Self-check
 
 ```bash
-python3 scripts/validate.py --case /input/case.json --work /app/work
+python3 /skills/weekly-skill/scripts/validate.py --case /input/case.json --work /app/work
 python3 -c "import json;e=json.load(open('/app/work/entities.json'));print(len(e['entities']), len(e['relations']), e['relation_counts'])"
 ```
 
